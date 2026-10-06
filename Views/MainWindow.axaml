@@ -1,0 +1,181 @@
+<Window xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:vm="using:MarkeratorFast.ViewModels"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:terminal="using:SvcSystems.UI.Terminal"
+        mc:Ignorable="d" d:DesignWidth="850" d:DesignHeight="600"
+        x:Class="MarkeratorFast.Views.MainWindow"
+        x:DataType="vm:MainViewModel"
+        Icon="/Assets/avalonia-logo.ico"
+        Title="Markerator Fast">
+
+    <Design.DataContext>
+        <!-- This only sets the DataContext for the previewer in an IDE,
+             to set the actual DataContext for runtime, set the DataContext property in code (look at App.axaml.cs) -->
+        <vm:MainViewModel />
+    </Design.DataContext>
+    
+    <StackPanel>
+        <Border 
+            BorderBrush="Black"
+            BorderThickness="2" 
+            CornerRadius="4" 
+            Padding="5" 
+            Margin="5"
+            BoxShadow="5 5 10 0 DarkGray">
+
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition Width="Auto"/>
+                </Grid.ColumnDefinitions>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                </Grid.RowDefinitions>
+                
+                <TextBlock Grid.Column="0"  Grid.Row="0"
+                           Text="Website Title: "
+                           VerticalAlignment="Top"
+                           Margin="5"
+                           Padding="5"/>
+                <TextBox Grid.Column="1 " Grid.Row="0"
+                         PlaceholderText="Name of the website"
+                         AcceptsReturn="False"
+                         HorizontalAlignment="Left"
+                         VerticalAlignment="Top"
+                         Margin="5"/>
+                
+                <TextBlock Grid.Column="0"  Grid.Row="1"
+                           Text="Website URL: "
+                           VerticalAlignment="Top"
+                           Margin="5"
+                           Padding="5"/>
+                <TextBox Grid.Column="1 " Grid.Row="1"
+                         PlaceholderText="Fully qualified base URL of the website"
+                         AcceptsReturn="False"
+                         HorizontalAlignment="Left"
+                         VerticalAlignment="Top"
+                         Margin="5"/>
+                
+                <TextBlock Grid.Column="0"  Grid.Row="2"
+                           Text="Index Markdown File: "
+                           VerticalAlignment="Top"
+                           Margin="5"
+                           Padding="5"/>
+                <TextBox Grid.Column="1 " Grid.Row="2"
+                         PlaceholderText="Index.md, Main.md, Homepage.md, etc"
+                         AcceptsReturn="False"
+                         HorizontalAlignment="Left"
+                         VerticalAlignment="Top"
+                         Margin="5"/>
+                
+                <TextBlock Grid.Column="0"  Grid.Row="3"
+                           Text="Other pages: "
+                           VerticalAlignment="Top"
+                           Margin="5"
+                           Padding="5"/>
+                <TextBox Grid.Column="1 " Grid.Row="3"
+                         PlaceholderText="Comma separated list of Markdown files (About.md, Contact.md)"
+                         AcceptsReturn="False"
+                         HorizontalAlignment="Left"
+                         VerticalAlignment="Top"
+                         Margin="5"/>
+                
+                <CheckBox Grid.Column="0"  Grid.Row="4"
+                          Content="Include FavIcon?"
+                          Margin="5"
+                          Padding="5"/>
+                <TextBox Grid.Column="1 " Grid.Row="4"
+                         PlaceholderText="Path to favicon file"
+                         AcceptsReturn="False"
+                         HorizontalAlignment="Left"
+                         VerticalAlignment="Top"
+                         Margin="5"/>
+                
+                <CheckBox Grid.Column="0"  Grid.Row="5"
+                          Content="Include Posts/News/Updates ?"
+                          Margin="5"
+                          Padding="5"/>
+                <TextBox Grid.Column="1 " Grid.Row="5"
+                         PlaceholderText="Comma separated list of posts/news/updates sections"
+                         AcceptsReturn="False"
+                         HorizontalAlignment="Left"
+                         VerticalAlignment="Top"
+                         Margin="5"/> 
+                
+                <TextBlock Grid.Column="0"  Grid.Row="6"
+                           Text="Pagination Limit:"
+                           VerticalAlignment="Top"
+                           Margin="5"
+                           Padding="5"/>
+                <TextBox Grid.Column="1 " Grid.Row="6"
+                         PlaceholderText="Number of posts to show on the posts/news/updates overview page"
+                         AcceptsReturn="False"
+                         HorizontalAlignment="Left"
+                         VerticalAlignment="Top"
+                         Margin="5"/>
+                
+                <CheckBox Grid.Column="0"  Grid.Row="7"
+                          Content="Generate RSS feeds?"
+                          Margin="5"
+                          Padding="5"/>
+                
+                <TextBlock Grid.Column="0"  Grid.Row="8"
+                           Text="RSS Icon: "
+                           VerticalAlignment="Top"
+                           Margin="5"
+                           Padding="5"/>
+                <TextBox Grid.Column="1 " Grid.Row="8"
+                         PlaceholderText="Filename of the RSS icon"
+                         AcceptsReturn="False"
+                         HorizontalAlignment="Left"
+                         VerticalAlignment="Top"
+                         Margin="5"/>
+                
+                <TextBlock Grid.Column="0"  Grid.Row="9"
+                           Text="Custom CSS: "
+                           VerticalAlignment="Top"
+                           Margin="5"
+                           Padding="5"/>
+                <TextBox Grid.Column="1 " Grid.Row="9"
+                         PlaceholderText="Filename of the custom CSS file"
+                         AcceptsReturn="False"
+                         HorizontalAlignment="Left"
+                         VerticalAlignment="Top"
+                         Margin="5"/>
+                
+                <Button Grid.Row="9" Grid.Column="2"
+                        Content="Generate"/>
+            </Grid>
+        </Border>
+        
+        <Border 
+            BorderBrush="Black"
+            BorderThickness="2" 
+            CornerRadius="4" 
+            Padding="5" 
+            Margin="5"
+            BoxShadow="5 5 10 0 DarkGray"
+            VerticalAlignment="Stretch">
+            <terminal:TerminalControl Name="TerminalView" 
+                                      Height="125"/>
+        </Border>
+    </StackPanel>
+</Window>
+
+<!--
+Text="{Binding Greeting}"
+-->
