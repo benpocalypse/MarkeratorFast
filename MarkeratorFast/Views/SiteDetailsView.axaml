@@ -1,0 +1,138 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
+             x:Class="MarkeratorFast.Views.SiteDetailsView">
+    
+    <ScrollViewer VerticalAlignment="Stretch">
+        <Grid ColumnDefinitions="5,Auto,*,5"
+              RowDefinitions="5,*,*,*,*,*,*,*,*,*,*,*,Auto,*,5">
+            <TextBlock Grid.Row="1"
+                       Grid.Column="1"
+                       VerticalAlignment="Center"
+                       Text="Title"/>
+            
+            <TextBox Grid.Row="1"
+                     Grid.Column="2"
+                     Padding="5"
+                     Margin="10 5 20 5 "
+                     ToolTip.Tip="The name of the website. It can be anything and will show up in the web browser titlebar."
+                     VerticalAlignment="Center"
+                     HorizontalAlignment="Stretch">
+                
+            </TextBox>
+            
+            <TextBlock Grid.Row="2"
+                       Grid.Column="1"
+                       VerticalAlignment="Center"
+                       Text="Address (URL)"/>
+            
+            <TextBox Grid.Row="2"
+                     Grid.Column="2"
+                     Padding="5"
+                     Margin="10 5 20 5 "
+                     ToolTip.Tip="The complete qualified address/URL of the website."
+                     VerticalAlignment="Center"
+                     HorizontalAlignment="Stretch" />
+            
+            <TextBlock Grid.Row="3"
+                       Grid.Column="1"
+                       VerticalAlignment="Center"
+                       Text="Index Markdown File"/>
+            
+            <TextBox Grid.Row="3"
+                     Grid.Column="2"
+                     Padding="5"
+                     Margin="10 5 20 5 "
+                     ToolTip.Tip="The filename of the markdown file that will be the landing page."
+                     VerticalAlignment="Center"
+                     HorizontalAlignment="Stretch" />
+            
+            <TextBlock Grid.Row="4"
+                       Grid.Column="1"
+                       VerticalAlignment="Center"
+                       Text="Feed Page Title(s)"/>
+            
+            <TextBox Grid.Row="4"
+                     Grid.Column="2"
+                     Padding="5"
+                     Margin="10 5 20 5 "
+                     ToolTip.Tip="If you website is to include a News/Posts/Blog/Project section(s) enter their comma separated names here."
+                     VerticalAlignment="Center"
+                     HorizontalAlignment="Stretch" />
+            
+            <TextBlock Grid.Row="5"
+                       Grid.Column="1"
+                       VerticalAlignment="Center"
+                       Text="Pagination Limit"/>
+            
+            <TextBox Grid.Row="5"
+                     Grid.Column="2"
+                     Padding="5"
+                     Margin="10 5 20 5 "
+                     ToolTip.Tip="If you website is to include a News/Posts/Blog/Project section(s) and  you want to break them up into numbered pages, enter the limit here."
+                     VerticalAlignment="Center"
+                     HorizontalAlignment="Stretch" />
+            
+            <TextBlock Grid.Row="6"
+                       Grid.Column="1"
+                       VerticalAlignment="Center"
+                       Text="FavIcon"/>
+            
+            <TextBox Grid.Row="6"
+                     Grid.Column="2"
+                     Padding="5"
+                     Margin="10 5 20 5 "
+                     ToolTip.Tip="If you website is to include a News/Posts/Blog/Project section(s) enter their comma separated names here."
+                     VerticalAlignment="Center"
+                     HorizontalAlignment="Stretch" />
+            
+            <TextBlock Grid.Row="7"
+                       Grid.Column="1"
+                       VerticalAlignment="Center"
+                       Text="Include RSS feed(s)"/>
+            
+            <ToggleSwitch Grid.Row="7"
+                          Grid.Column="2"
+                          Padding="5"
+                          Margin="10 5 20 5 "
+                          OnContent="Yes"
+                          OffContent="No" />
+            
+            <TextBlock Grid.Row="8"
+                       Grid.Column="1"
+                       VerticalAlignment="Center"
+                       Text="RSS Icon"/>
+            
+            <TextBox Grid.Row="8"
+                     Grid.Column="2"
+                     Padding="5"
+                     Margin="10 5 20 5 "
+                     ToolTip.Tip="The filename of your RSS feed ico file."
+                     VerticalAlignment="Center"
+                     HorizontalAlignment="Stretch" />
+            
+            <TextBlock Grid.Row="9"
+                       Grid.Column="1"
+                       VerticalAlignment="Center"
+                       Text="Custom CSS"/>
+            
+            <TextBox Grid.Row="9"
+                     Grid.Column="2"
+                     Padding="5"
+                     Margin="10 5 20 5 "
+                     ToolTip.Tip="If you website is to include a News/Posts/Blog/Project section(s) enter their comma separated names here."
+                     VerticalAlignment="Center"
+                     HorizontalAlignment="Stretch" />
+            
+            <Button Grid.Row="13"
+                    Grid.Column="2"
+                    CornerRadius="10"
+                    Margin="0,5,20,5"
+                    HorizontalAlignment="Right">
+                Generate
+            </Button>
+        </Grid>
+    </ScrollViewer>
+</UserControl>
