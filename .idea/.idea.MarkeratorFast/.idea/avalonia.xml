@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="AvaloniaProject">
+    <option name="projectPerEditor">
+      <map>
+        <entry key="MarkeratorFast/App.axaml" value="MarkeratorFast.Desktop/MarkeratorFast.Desktop.csproj" />
+        <entry key="MarkeratorFast/Views/AboutDialog.axaml" value="MarkeratorFast.Desktop/MarkeratorFast.Desktop.csproj" />
+        <entry key="MarkeratorFast/Views/AboutDialogView.axaml" value="MarkeratorFast.Desktop/MarkeratorFast.Desktop.csproj" />
+        <entry key="MarkeratorFast/Views/MainView.axaml" value="MarkeratorFast.Desktop/MarkeratorFast.Desktop.csproj" />
+        <entry key="MarkeratorFast/Views/Preview.axaml" value="MarkeratorFast.Desktop/MarkeratorFast.Desktop.csproj" />
+        <entry key="MarkeratorFast/Views/PreviewView.axaml" value="MarkeratorFast.Desktop/MarkeratorFast.Desktop.csproj" />
+        <entry key="MarkeratorFast/Views/SiteDetailsView.axaml" value="MarkeratorFast.Desktop/MarkeratorFast.Desktop.csproj" />
+        <entry key="MarkeratorFast/Views/TestWindow.axaml" value="MarkeratorFast.Desktop/MarkeratorFast.Desktop.csproj" />
+      </map>
+    </option>
+  </component>
+</project>

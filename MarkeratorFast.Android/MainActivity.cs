@@ -6,7 +6,7 @@ using Avalonia.Android;
 namespace BrowserTest.Android;
 
 [Activity(
-    Label = "BrowserTest.Android",
+    Label = "MarkeratorFast.Android",
     Theme = "@style/MyTheme.NoActionBar",
     Icon = "@drawable/icon",
     MainLauncher = true,

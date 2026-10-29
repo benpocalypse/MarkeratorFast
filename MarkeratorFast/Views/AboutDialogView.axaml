@@ -1,0 +1,100 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             Background="Transparent"
+             Foreground="Transparent"
+             mc:Ignorable="d"
+             d:MinWidth="400"
+             d:MinHeight="450"
+             x:Class="MarkeratorFast.Views.AboutDialogView">
+    
+    <Grid RowDefinitions="*,50,Auto,50"
+          ColumnDefinitions="200">
+            <StackPanel Grid.Row="0" Orientation="Horizontal" HorizontalAlignment="Stretch">
+                <StackPanel.Styles>
+                    <Style Selector="Button">
+                        <Setter Property="Margin" Value="2"/>
+                        <Setter Property="CornerRadius" Value="20"/>
+                        <Setter Property="Height" Value="28"/>
+                    </Style>
+                </StackPanel.Styles>
+                
+                <Button Name="CloseButton"
+                        VerticalAlignment="Top"
+                        HorizontalAlignment="Left"
+                        Margin="0 0 5 0"
+                        Background="{DynamicResource ButtonBackground}"
+                        Foreground="{DynamicResource HeaderBarText}"
+                        Click="CloseButton_Clicked">✖</Button>
+                <TextBlock HorizontalAlignment="Center">About</TextBlock>
+            </StackPanel>
+        
+            <ScrollViewer Grid.Row="2">
+                <StackPanel  Orientation="Vertical" HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
+                    <Image
+                        HorizontalAlignment="Center"
+                        Margin="5"
+                        Source="../Assets/Icon.png" />
+                    
+                    <TextBlock
+                        HorizontalAlignment="Center"
+                        Foreground="Black"
+                        FontWeight="Bold"
+                        FontSize="16"
+                        Margin="5"
+                        Text="Markerator Fast!" />
+                    
+                    <TextBlock
+                        HorizontalAlignment="Center"
+                        Foreground="Black"
+                        Margin="5"
+                        Text="Ben Foote" />
+                    
+                    <Border 
+                        HorizontalAlignment="Center"
+                        CornerRadius="10"
+                        Margin="5"
+                        Background="{DynamicResource HighlightContentBackground}">
+                        <TextBlock
+                            Margin="5"
+                            Background="{DynamicResource HighlightContentBackground}"
+                            Foreground="{DynamicResource HighlightContentForeground}"
+                            HorizontalAlignment="Center"
+                            Name="MarkeratorFastVersionText"/>
+                    </Border>
+                    
+                    <Button 
+                        Name="WebsiteButton"
+                        HorizontalAlignment="Stretch"
+                        HorizontalContentAlignment="Left"
+                        VerticalAlignment="Center"
+                        Margin="3"
+                        Padding="5"
+                        CornerRadius="5"
+                        Click="WebsiteButton_OnClick">
+                        <Grid ColumnDefinitions="Auto,100,*">
+                            <TextBlock Grid.Column="0" VerticalAlignment="Center" HorizontalAlignment="Left" >Website</TextBlock>
+                            <PathIcon Grid.Column="2" Data="{DynamicResource OpenExternal}" HorizontalAlignment="Right" />
+                        </Grid>
+                    </Button>
+                    
+                    <Button 
+                        Name="IssuesButton"
+                        HorizontalAlignment="Stretch"
+                        HorizontalContentAlignment="Left"
+                        VerticalAlignment="Center"
+                        Margin="3"
+                        Padding="5"
+                        CornerRadius="5"
+                        Click="IssuesButton_OnClick">
+                        <Grid ColumnDefinitions="Auto,50,*">
+                            <TextBlock Grid.Column="0" VerticalAlignment="Center" HorizontalAlignment="Left" >Report an Issue</TextBlock>
+                            <PathIcon Grid.Column="2" Data="{DynamicResource OpenExternal}" HorizontalAlignment="Right" />
+                        </Grid>
+                    </Button>
+                </StackPanel>
+            </ScrollViewer>
+        </Grid>
+    
+</UserControl>

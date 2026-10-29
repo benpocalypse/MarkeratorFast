@@ -1,11 +1,11 @@
 ﻿<Solution>
-  <Project Path="BrowserTest.Android/BrowserTest.Android.csproj">
-    <Deploy />
-  </Project>
-  <Project Path="BrowserTest.iOS/BrowserTest.iOS.csproj">
+  <Project Path="MarkeratorFast.Android\MarkeratorFast.Android.csproj">
     <Deploy />
   </Project>
   <Project Path="MarkeratorFast.Browser\MarkeratorFast.Browser.csproj" />
   <Project Path="MarkeratorFast.Desktop\MarkeratorFast.Desktop.csproj" />
+  <Project Path="MarkeratorFast.iOS\MarkeratorFast.iOS.csproj">
+    <Deploy />
+  </Project>
   <Project Path="MarkeratorFast\MarkeratorFast.csproj" />
 </Solution>

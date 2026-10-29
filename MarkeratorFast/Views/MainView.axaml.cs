@@ -1,4 +1,5 @@
 using System;
+using System.Windows.Input;
 using Avalonia.Controls;
 using Avalonia.Input;
 using Avalonia.Markup.Xaml.MarkupExtensions;
@@ -11,13 +12,9 @@ public partial class MainView : Window
     public MainView()
     {
         InitializeComponent();
-        
-        WindowChrome.PointerPressed += (i, e) =>
-        {
-            BeginMoveDrag(e);
-        };
-        
-        
+
+        WindowChrome.PointerPressed += (i, e) => { BeginMoveDrag(e); };
+
         SetupSide(Left, StandardCursorType.LeftSide, WindowEdge.West);
         SetupSide(Right, StandardCursorType.RightSide, WindowEdge.East);
         SetupSide(Top, StandardCursorType.TopSide, WindowEdge.North);
@@ -26,21 +23,15 @@ public partial class MainView : Window
         SetupSide(TopRight, StandardCursorType.TopRightCorner, WindowEdge.NorthEast);
         SetupSide(BottomLeft, StandardCursorType.BottomLeftCorner, WindowEdge.SouthWest);
         SetupSide(BottomRight, StandardCursorType.BottomRightCorner, WindowEdge.SouthEast);
-        
-        MinimizeButton.Click += delegate
-        {
-            this.WindowState = WindowState.Minimized;
-        };
-        
+
+        MinimizeButton.Click += delegate { this.WindowState = WindowState.Minimized; };
+
         MaximizeButton.Click += delegate
         {
             WindowState = WindowState == WindowState.Maximized ? WindowState.Normal : WindowState.Maximized;
         };
-        
-        CloseButton.Click += delegate
-        {
-            Close();
-        };
+
+        CloseButton.Click += delegate { Close(); };
 
         WelcomeButton.Click += (s, e) =>
         {
@@ -48,30 +39,53 @@ public partial class MainView : Window
             SiteDetailsButton[!BackgroundProperty] = new DynamicResourceExtension("FlyoutBackground");
             var vm = this.DataContext as MainViewModel;
             vm.CurrentPage = new WelcomePageViewModel();
-            
+
             e.Handled = true;
         };
-        
+
         SiteDetailsButton.Click += (s, e) =>
         {
             WelcomeButton[!BackgroundProperty] = new DynamicResourceExtension("FlyoutBackground");
             SiteDetailsButton[!BackgroundProperty] = new DynamicResourceExtension("ButtonBackground");
             var vm = this.DataContext as MainViewModel;
             vm.CurrentPage = new SiteDetailsViewModel();
+
+            e.Handled = true;
+        };
+
+        PreviewButton.Click += (s, e) =>
+        {
+            WelcomeButton[!BackgroundProperty] = new DynamicResourceExtension("FlyoutBackground");
+            SiteDetailsButton[!BackgroundProperty] = new DynamicResourceExtension("FlyoutBackground");
+            PreviewButton[!BackgroundProperty] = new DynamicResourceExtension("ButtonBackground");
+            var vm = this.DataContext as MainViewModel;
+            vm.CurrentPage = new PreviewViewModel();
+
+            e.Handled = true;
+        };
+
+        SwitchPaneButton.Click += (s, e) =>
+        {
+            MainSplitView.CompactPaneLength = MainSplitView.CompactPaneLength == 0 ? 36 : 0;
+            SwitchPaneButton[!BackgroundProperty] = MainSplitView.CompactPaneLength == 0 ? 
+                new DynamicResourceExtension("ButtonBackground") :
+                new DynamicResourceExtension("FlyoutBackground");
             
             e.Handled = true;
         };
+
+        AboutButton.Click += (s, e) =>
+        {
+            diagHost.IsOpen = true;
+        };
     }
-    
 
     private void SetupSide(Control ctl, StandardCursorType cursor, WindowEdge edge)
     {
-        Console.WriteLine($"Setting up side {edge.ToString()}");
-        
         ctl.Cursor = new Cursor(cursor);
+        
         ctl.PointerPressed += (i, e) =>
         {
-            Console.Write($"Side {i.ToString()} clicked.");
             if (WindowState == WindowState.Normal)
                 BeginResizeDrag(edge, e);
         };
@@ -80,6 +94,7 @@ public partial class MainView : Window
     protected override void OnSizeChanged(SizeChangedEventArgs e)
     {
         base.OnSizeChanged(e);
+        
         if (DataContext is MainViewModel vm)
         {
             vm.UpdateLayout(e.NewSize.Width);
