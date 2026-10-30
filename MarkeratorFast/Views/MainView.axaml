@@ -24,7 +24,7 @@
         <vm:MainViewModel/>
     </Design.DataContext>
     
-    <dialogHost:DialogHost CloseOnClickAway="True" Name="diagHost" Identifier="MainDialogHost" dialogHost:DialogHostStyle.CornerRadius="8">
+    <dialogHost:DialogHost Name="diagHost" Identifier="MainDialogHost" dialogHost:DialogHostStyle.CornerRadius="8" IsMultipleDialogsEnabled="True">
         <dialogHost:DialogHost.DialogContent>
             <vm:AboutDialogViewModel />
         </dialogHost:DialogHost.DialogContent>
@@ -92,23 +92,25 @@
                     Grid.Column="3"
                     HorizontalAlignment="Stretch"
                     Orientation="Horizontal">
+                    <Border Background="Black" HorizontalAlignment="Stretch">
                     <TextBlock VerticalAlignment="Center"
                                Margin="0,0,5,0"
-                               HorizontalAlignment="Center"
+                               HorizontalAlignment="Left"
                                Background="{DynamicResource FlyoutBackground}"
                                Foreground="{DynamicResource HeaderBarText}"
                                Text="Markerator Fast!" />
-                        
-                    <Menu HorizontalAlignment="Right" Margin="00 3 1 1">
+                    </Border>    
+                    <Menu HorizontalAlignment="Right" Margin="00 3 1 1" CornerRadius="15">
                         <MenuItem>
                             <MenuItem.Header>
                                 <PathIcon Data="{DynamicResource HamburgerIcon}" />
                             </MenuItem.Header>
-                            <MenuItem Header="Get Latest Markerator" IsEnabled="False"/>
-                            <MenuItem Header="Preferences" IsEnabled="False"/>
-                            <MenuItem Header="About" Name="AboutButton"/>
+                            <MenuItem Header="Get Latest Markerator" Name="DownloadButton" CornerRadius="15"/>
+                            <MenuItem Header="Preferences" IsEnabled="False" CornerRadius="15"/>
+                            <MenuItem Header="About" Name="AboutButton" CornerRadius="15"/>
                         </MenuItem>
                     </Menu>
+                    
                 </StackPanel>
                 
                 <SplitView Grid.Column="1"

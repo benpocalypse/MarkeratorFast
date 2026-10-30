@@ -1,8 +1,12 @@
 using System;
+using System.Linq;
+using System.Net;
 using System.Windows.Input;
 using Avalonia.Controls;
 using Avalonia.Input;
+using Avalonia.LogicalTree;
 using Avalonia.Markup.Xaml.MarkupExtensions;
+using DialogHostAvalonia;
 using MarkeratorFast.ViewModels;
 
 namespace MarkeratorFast.Views;
@@ -37,8 +41,9 @@ public partial class MainView : Window
         {
             WelcomeButton[!BackgroundProperty] = new DynamicResourceExtension("ButtonBackground");
             SiteDetailsButton[!BackgroundProperty] = new DynamicResourceExtension("FlyoutBackground");
+            PreviewButton[!BackgroundProperty] = new DynamicResourceExtension("FlyoutBackground");
             var vm = this.DataContext as MainViewModel;
-            vm.CurrentPage = new WelcomePageViewModel();
+            vm?.CurrentPage = new WelcomePageViewModel();
 
             e.Handled = true;
         };
@@ -47,8 +52,9 @@ public partial class MainView : Window
         {
             WelcomeButton[!BackgroundProperty] = new DynamicResourceExtension("FlyoutBackground");
             SiteDetailsButton[!BackgroundProperty] = new DynamicResourceExtension("ButtonBackground");
+            PreviewButton[!BackgroundProperty] = new DynamicResourceExtension("FlyoutBackground");
             var vm = this.DataContext as MainViewModel;
-            vm.CurrentPage = new SiteDetailsViewModel();
+            vm?.CurrentPage = new SiteDetailsViewModel();
 
             e.Handled = true;
         };
@@ -59,7 +65,7 @@ public partial class MainView : Window
             SiteDetailsButton[!BackgroundProperty] = new DynamicResourceExtension("FlyoutBackground");
             PreviewButton[!BackgroundProperty] = new DynamicResourceExtension("ButtonBackground");
             var vm = this.DataContext as MainViewModel;
-            vm.CurrentPage = new PreviewViewModel();
+            vm?.CurrentPage = new PreviewViewModel();
 
             e.Handled = true;
         };
@@ -74,10 +80,31 @@ public partial class MainView : Window
             e.Handled = true;
         };
 
+        DownloadButton.Click += (s, e) =>
+        {
+            using (var client = new WebClient())
+            {
+                DialogHost.Show(new DownloadProgressDialogView(), "MainDialogHost");
+                client.DownloadProgressChanged += WebClient_DownloadProgressChanged;
+                client.DownloadDataCompleted += WebClient_DownloadCompleted;
+                client.DownloadDataAsync(new Uri("https://github.com/benpocalypse/Markerator/releases/download/1.0.0/markerator-linux-x64-1.0.0.zip"), "markerator-linux-x64-1.0.0.zip");
+            }
+        };
+
         AboutButton.Click += (s, e) =>
         {
             diagHost.IsOpen = true;
         };
+    }
+
+    private void WebClient_DownloadCompleted(object sender, DownloadDataCompletedEventArgs e)
+    {
+        DialogHost.GetDialogSession("MainDialogHost")?.Close(true);
+    }
+
+    private void WebClient_DownloadProgressChanged(object sender, DownloadProgressChangedEventArgs e)
+    {
+        ((ProgressBar)((DownloadProgressDialogView)DialogHost.GetDialogSession("MainDialogHost")?.Content).GetLogicalChildren().First()).Value = e.ProgressPercentage;
     }
 
     private void SetupSide(Control ctl, StandardCursorType cursor, WindowEdge edge)
