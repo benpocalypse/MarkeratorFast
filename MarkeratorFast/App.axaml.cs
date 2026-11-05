@@ -40,4 +40,3 @@ public class App : Application
         base.OnFrameworkInitializationCompleted();
     }
 }
-// ISingleViewApplicationLifetime.MainView

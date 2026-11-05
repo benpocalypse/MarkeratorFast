@@ -1,6 +1,10 @@
 using System;
+using System.IO;
 using System.Linq;
 using System.Net;
+using System.Security.Cryptography;
+using System.Text;
+using System.Threading;
 using System.Windows.Input;
 using Avalonia.Controls;
 using Avalonia.Input;
@@ -88,23 +92,80 @@ public partial class MainView : Window
                 client.DownloadProgressChanged += WebClient_DownloadProgressChanged;
                 client.DownloadDataCompleted += WebClient_DownloadCompleted;
                 client.DownloadDataAsync(new Uri("https://github.com/benpocalypse/Markerator/releases/download/1.0.0/markerator-linux-x64-1.0.0.zip"), "markerator-linux-x64-1.0.0.zip");
+                
+                e.Handled = true;
             }
         };
 
         AboutButton.Click += (s, e) =>
         {
             diagHost.IsOpen = true;
+            e.Handled = true;
         };
+        
+        var timer = new System.Threading.Timer(CheckForUpdates_Callback, null, TimeSpan.FromMilliseconds(100), TimeSpan.Zero);
+    }
+
+    private void CheckForUpdates_Callback(object? state)
+    {
+        using (var client = new WebClient())
+        {
+            FileStream fStream = new  FileStream("markerator-linux-x64-1.0.0.zip", FileMode.Open);
+            fStream.Position = 0;
+            
+            var newMarkeratorSha = SHA256Managed.Create().ComputeHash(client.OpenRead("https://github.com/benpocalypse/Markerator/releases/download/1.0.0/markerator-linux-x64-1.0.0.zip"));
+            var currentMarkeratorSha = SHA256Managed.Create().ComputeHash(fStream);
+
+            StringBuilder newMarkeratorShaString = new StringBuilder();
+            foreach (var b in newMarkeratorSha)
+            {
+                newMarkeratorShaString.Append(b.ToString("x2"));
+            }
+            
+            StringBuilder currentMarkeratorShaString = new StringBuilder();
+            foreach (var b in currentMarkeratorSha)
+            {
+                currentMarkeratorShaString.Append(b.ToString("x2"));
+            }
+
+            if (!newMarkeratorShaString.Equals(currentMarkeratorShaString))
+            {
+                Dispatcher.Invoke(() =>
+                {
+                    DialogHost.Show(new DownloadProgressDialogView(), "MainDialogHost");
+                    client.DownloadProgressChanged += WebClient_DownloadProgressChanged;
+                    client.DownloadDataCompleted += WebClient_DownloadCompleted;
+                    client.DownloadDataAsync(
+                        new Uri(
+                            "https://github.com/benpocalypse/Markerator/releases/download/1.0.0/markerator-linux-x64-1.0.0.zip"),
+                        "markerator-linux-x64-1.0.0.zip");
+                });
+            }
+        }
     }
 
     private void WebClient_DownloadCompleted(object sender, DownloadDataCompletedEventArgs e)
     {
+        var children = ((DownloadProgressDialogView)DialogHost.GetDialogSession("MainDialogHost")?.Content)
+            .GetLogicalChildren();
+        
+        var progressText = (TextBlock)children.ElementAt(0).LogicalChildren[1];
+        
+        progressText.Text = "Done!";
+        DownloadButton.IsEnabled = false;
         DialogHost.GetDialogSession("MainDialogHost")?.Close(true);
     }
 
     private void WebClient_DownloadProgressChanged(object sender, DownloadProgressChangedEventArgs e)
     {
-        ((ProgressBar)((DownloadProgressDialogView)DialogHost.GetDialogSession("MainDialogHost")?.Content).GetLogicalChildren().First()).Value = e.ProgressPercentage;
+        var children = ((DownloadProgressDialogView)DialogHost.GetDialogSession("MainDialogHost")?.Content)
+            .GetLogicalChildren();
+        
+        var progressBar = (ProgressBar)children.ElementAt(0).LogicalChildren[0];
+        var progressText = (TextBlock)children.ElementAt(0).LogicalChildren[1];
+        
+        progressText.Text = "Downloading...";
+        progressBar.Value = e.ProgressPercentage;
     }
 
     private void SetupSide(Control ctl, StandardCursorType cursor, WindowEdge edge)

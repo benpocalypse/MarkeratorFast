@@ -92,14 +92,12 @@
                     Grid.Column="3"
                     HorizontalAlignment="Stretch"
                     Orientation="Horizontal">
-                    <Border Background="Black" HorizontalAlignment="Stretch">
                     <TextBlock VerticalAlignment="Center"
-                               Margin="0,0,5,0"
-                               HorizontalAlignment="Left"
+                               Margin="0,0,50,0"
+                               HorizontalAlignment="Stretch"
                                Background="{DynamicResource FlyoutBackground}"
                                Foreground="{DynamicResource HeaderBarText}"
                                Text="Markerator Fast!" />
-                    </Border>    
                     <Menu HorizontalAlignment="Right" Margin="00 3 1 1" CornerRadius="15">
                         <MenuItem>
                             <MenuItem.Header>

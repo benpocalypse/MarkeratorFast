@@ -8,5 +8,12 @@
              d:MinWidth="400"
              d:MinHeight="450"
              x:Class="MarkeratorFast.Views.DownloadProgressDialogView">
-    <ProgressBar Name="DownloadProgressBar"></ProgressBar>
+    <StackPanel Orientation="Vertical">
+        <ProgressBar Name="DownloadProgressBar" ShowProgressText="True"/>
+        <TextBlock Name="StatusText"
+                   Margin="5"
+                   Padding="5"
+                   Foreground="Black"
+                   Text="Checking for updates..."/>
+    </StackPanel>
 </UserControl>

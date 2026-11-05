@@ -2,10 +2,14 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:models="clr-namespace:MarkeratorFast.Models"
+             xmlns:vm="using:MarkeratorFast.ViewModels"
+             x:CompileBindings="True"
+             x:DataType="vm:SiteDetailsViewModel"
              mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
              x:Class="MarkeratorFast.Views.SiteDetailsView">
-    
-    <ScrollViewer VerticalAlignment="Stretch">
+
+    <ScrollViewer VerticalAlignment="Stretch" DataContext="{Binding Configuration}">
         <Grid ColumnDefinitions="5,Auto,*,5"
               RowDefinitions="5,*,*,*,*,*,*,*,*,*,*,*,Auto,*,5">
             <TextBlock Grid.Row="1"
@@ -18,10 +22,9 @@
                      Padding="5"
                      Margin="10 5 20 5 "
                      ToolTip.Tip="The name of the website. It can be anything and will show up in the web browser titlebar."
+                     Text="{Binding SiteTitle, Mode=TwoWay}"
                      VerticalAlignment="Center"
-                     HorizontalAlignment="Stretch">
-                
-            </TextBox>
+                     HorizontalAlignment="Stretch" />
             
             <TextBlock Grid.Row="2"
                        Grid.Column="1"
@@ -33,6 +36,7 @@
                      Padding="5"
                      Margin="10 5 20 5 "
                      ToolTip.Tip="The complete qualified address/URL of the website."
+                     Text="{Binding SiteAddress}"
                      VerticalAlignment="Center"
                      HorizontalAlignment="Stretch" />
             
@@ -46,6 +50,7 @@
                      Padding="5"
                      Margin="10 5 20 5 "
                      ToolTip.Tip="The filename of the markdown file that will be the landing page."
+                     Text="{Binding IndexFile}"
                      VerticalAlignment="Center"
                      HorizontalAlignment="Stretch" />
             
@@ -59,6 +64,7 @@
                      Padding="5"
                      Margin="10 5 20 5 "
                      ToolTip.Tip="If you website is to include a News/Posts/Blog/Project section(s) enter their comma separated names here."
+                     Text="{Binding FeedTitles}"
                      VerticalAlignment="Center"
                      HorizontalAlignment="Stretch" />
             
@@ -72,6 +78,7 @@
                      Padding="5"
                      Margin="10 5 20 5 "
                      ToolTip.Tip="If you website is to include a News/Posts/Blog/Project section(s) and  you want to break them up into numbered pages, enter the limit here."
+                     Text="{Binding PaginationLimit}"
                      VerticalAlignment="Center"
                      HorizontalAlignment="Stretch" />
             
@@ -84,7 +91,8 @@
                      Grid.Column="2"
                      Padding="5"
                      Margin="10 5 20 5 "
-                     ToolTip.Tip="If you website is to include a News/Posts/Blog/Project section(s) enter their comma separated names here."
+                     ToolTip.Tip="The Icon (ico) file to be shown in the URL bar."
+                     Text="{Binding FavIcon}"
                      VerticalAlignment="Center"
                      HorizontalAlignment="Stretch" />
             
@@ -96,20 +104,24 @@
             <ToggleSwitch Grid.Row="7"
                           Grid.Column="2"
                           Padding="5"
-                          Margin="10 5 20 5 "
+                          Margin="10 5 20 5"
+                          Name="UseRss"
                           OnContent="Yes"
                           OffContent="No" />
             
             <TextBlock Grid.Row="8"
                        Grid.Column="1"
+                       IsEnabled="{Binding RelativeSource=UseRss.Value}"
                        VerticalAlignment="Center"
                        Text="RSS Icon"/>
             
             <TextBox Grid.Row="8"
                      Grid.Column="2"
                      Padding="5"
-                     Margin="10 5 20 5 "
+                     Margin="10 5 20 5"
+                     IsEnabled="{Binding RelativeSource=UseRss.Value}"
                      ToolTip.Tip="The filename of your RSS feed ico file."
+                     Text="{Binding RssIcon}"
                      VerticalAlignment="Center"
                      HorizontalAlignment="Stretch" />
             
@@ -122,7 +134,8 @@
                      Grid.Column="2"
                      Padding="5"
                      Margin="10 5 20 5 "
-                     ToolTip.Tip="If you website is to include a News/Posts/Blog/Project section(s) enter their comma separated names here."
+                     ToolTip.Tip="The filename of a custom CSS file to use, rather than the default."
+                     Text="{Binding CustomCss}"
                      VerticalAlignment="Center"
                      HorizontalAlignment="Stretch" />
             
@@ -130,6 +143,7 @@
                     Grid.Column="2"
                     CornerRadius="10"
                     Margin="0,5,20,5"
+                    Click="GenerateSite_Clicked"
                     HorizontalAlignment="Right">
                 Generate
             </Button>
