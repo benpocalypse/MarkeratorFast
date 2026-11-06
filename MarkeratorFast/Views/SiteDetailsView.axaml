@@ -43,15 +43,30 @@
                        Grid.Column="1"
                        VerticalAlignment="Center"
                        Text="Index Markdown File"/>
+
+            <StackPanel Grid.Row="3"
+                         Grid.Column="2"
+                         HorizontalAlignment="Stretch"
+                         Orientation="Horizontal">
+                
+                <TextBox Grid.Row="3"
+                         Grid.Column="2"
+                         Padding="5"
+                         Margin="10 5 20 5 "
+                         ToolTip.Tip="The filename of the markdown file that will be the landing page."
+                         Text="{Binding IndexFile.Name}"
+                         VerticalAlignment="Center"
+                         HorizontalAlignment="Stretch" />
+                <Button Grid.Row="3"
+                        Grid.Column="2"
+                        Padding="5"
+                        Margin="10 5 20 5"
+                        VerticalAlignment="Center"
+                        HorizontalAlignment="Right"
+                        Content="Choose File"
+                        Click="IndexFilePicker_Clicked" />
             
-            <TextBox Grid.Row="3"
-                     Grid.Column="2"
-                     Padding="5"
-                     Margin="10 5 20 5 "
-                     ToolTip.Tip="The filename of the markdown file that will be the landing page."
-                     Text="{Binding IndexFile}"
-                     VerticalAlignment="Center"
-                     HorizontalAlignment="Stretch" />
+            </StackPanel>
             
             <TextBlock Grid.Row="4"
                        Grid.Column="1"
@@ -142,6 +157,7 @@
                     CornerRadius="10"
                     Margin="0,5,20,5"
                     Click="GenerateSite_Clicked"
+                    Name="GenerateSiteButton"
                     HorizontalAlignment="Right">
                 Generate
             </Button>
