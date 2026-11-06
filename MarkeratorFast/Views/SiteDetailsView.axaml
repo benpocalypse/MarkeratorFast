@@ -2,7 +2,6 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-             xmlns:models="clr-namespace:MarkeratorFast.Models"
              xmlns:vm="using:MarkeratorFast.ViewModels"
              x:CompileBindings="True"
              x:DataType="vm:SiteDetailsViewModel"
@@ -111,7 +110,6 @@
             
             <TextBlock Grid.Row="8"
                        Grid.Column="1"
-                       IsEnabled="{Binding RelativeSource=UseRss.Value}"
                        VerticalAlignment="Center"
                        Text="RSS Icon"/>
             
@@ -119,7 +117,7 @@
                      Grid.Column="2"
                      Padding="5"
                      Margin="10 5 20 5"
-                     IsEnabled="{Binding RelativeSource=UseRss.Value}"
+                     IsEnabled="{Binding ElementName=UseRss, Path=IsChecked}"
                      ToolTip.Tip="The filename of your RSS feed ico file."
                      Text="{Binding RssIcon}"
                      VerticalAlignment="Center"

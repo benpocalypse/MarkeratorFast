@@ -1,7 +1,9 @@
 using System;
 using System.IO;
+using System.IO.Compression;
 using System.Linq;
 using System.Net;
+using System.Runtime.InteropServices;
 using System.Security.Cryptography;
 using System.Text;
 using System.Threading;
@@ -17,6 +19,8 @@ namespace MarkeratorFast.Views;
 
 public partial class MainView : Window
 {
+    private string? _filename = null;
+    
     public MainView()
     {
         InitializeComponent();
@@ -103,33 +107,62 @@ public partial class MainView : Window
             e.Handled = true;
         };
         
-        var timer = new System.Threading.Timer(CheckForUpdates_Callback, null, TimeSpan.FromMilliseconds(100), TimeSpan.Zero);
+        _ = new Timer(CheckForUpdates_Callback, null, TimeSpan.FromMilliseconds(100), TimeSpan.Zero);
     }
 
     private void CheckForUpdates_Callback(object? state)
     {
         using (var client = new WebClient())
         {
-            FileStream fStream = new  FileStream("markerator-linux-x64-1.0.0.zip", FileMode.Open);
-            fStream.Position = 0;
-            
-            var newMarkeratorSha = SHA256Managed.Create().ComputeHash(client.OpenRead("https://github.com/benpocalypse/Markerator/releases/download/1.0.0/markerator-linux-x64-1.0.0.zip"));
-            var currentMarkeratorSha = SHA256Managed.Create().ComputeHash(fStream);
+            _filename = RuntimeInformation.IsOSPlatform(OSPlatform.Linux) ? "markerator-linux-x64-1.0.0.zip" :
+                RuntimeInformation.IsOSPlatform(OSPlatform.Windows) ? "markerator-windows-x64-1.0.0.zip" :
+                RuntimeInformation.IsOSPlatform(OSPlatform.OSX) ? "markerator-osx-arm64-1.0.0.zip" :
+                null;
 
-            StringBuilder newMarkeratorShaString = new StringBuilder();
-            foreach (var b in newMarkeratorSha)
-            {
-                newMarkeratorShaString.Append(b.ToString("x2"));
-            }
-            
-            StringBuilder currentMarkeratorShaString = new StringBuilder();
-            foreach (var b in currentMarkeratorSha)
-            {
-                currentMarkeratorShaString.Append(b.ToString("x2"));
+            if (_filename is null)
+            { // TODO - surface a user facing error message in the future
+                return;
             }
 
-            if (!newMarkeratorShaString.Equals(currentMarkeratorShaString))
+            try
             {
+                FileStream fStream = new  FileStream(_filename, FileMode.Open);
+                fStream.Position = 0;
+            
+                var newMarkeratorSha = SHA256Managed.Create().ComputeHash(client.OpenRead("https://github.com/benpocalypse/Markerator/releases/download/1.0.0/markerator-linux-x64-1.0.0.zip"));
+                var currentMarkeratorSha = SHA256Managed.Create().ComputeHash(fStream);
+
+                StringBuilder newMarkeratorShaString = new StringBuilder();
+                foreach (var b in newMarkeratorSha)
+                {
+                    newMarkeratorShaString.Append(b.ToString("x2"));
+                }
+            
+                StringBuilder currentMarkeratorShaString = new StringBuilder();
+                foreach (var b in currentMarkeratorSha)
+                {
+                    currentMarkeratorShaString.Append(b.ToString("x2"));
+                }
+
+                if (!newMarkeratorShaString.Equals(currentMarkeratorShaString))
+                {
+                    Dispatcher.Invoke(() =>
+                    {
+                        DialogHost.Show(new DownloadProgressDialogView(), "MainDialogHost");
+                        client.DownloadProgressChanged += WebClient_DownloadProgressChanged;
+                        client.DownloadDataCompleted += WebClient_DownloadCompleted;
+                        client.DownloadDataAsync(
+                            new Uri(
+                                $"https://github.com/benpocalypse/Markerator/releases/download/1.0.0/{_filename}"),
+                                _filename);
+                    });
+                }
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e);
+                // TODO - gulp the exception for now, but fix this in the future.
+                
                 Dispatcher.Invoke(() =>
                 {
                     DialogHost.Show(new DownloadProgressDialogView(), "MainDialogHost");
@@ -137,10 +170,11 @@ public partial class MainView : Window
                     client.DownloadDataCompleted += WebClient_DownloadCompleted;
                     client.DownloadDataAsync(
                         new Uri(
-                            "https://github.com/benpocalypse/Markerator/releases/download/1.0.0/markerator-linux-x64-1.0.0.zip"),
-                        "markerator-linux-x64-1.0.0.zip");
+                            $"https://github.com/benpocalypse/Markerator/releases/download/1.0.0/{_filename}"),
+                        _filename);
                 });
             }
+            
         }
     }
 
@@ -150,10 +184,35 @@ public partial class MainView : Window
             .GetLogicalChildren();
         
         var progressText = (TextBlock)children.ElementAt(0).LogicalChildren[1];
+        var progressBar = (ProgressBar)children.ElementAt(0).LogicalChildren[0];
         
         progressText.Text = "Done!";
         DownloadButton.IsEnabled = false;
-        DialogHost.GetDialogSession("MainDialogHost")?.Close(true);
+        
+        //DialogHost.GetDialogSession("MainDialogHost")?.Close(true);
+        
+        _  = new Timer(UnzipFile_Callback, null, TimeSpan.FromMilliseconds(1000), TimeSpan.Zero);
+    }
+
+    private void UnzipFile_Callback(object? state)
+    {
+        Dispatcher.Invoke(() =>
+        {
+            var children = ((DownloadProgressDialogView)DialogHost.GetDialogSession("MainDialogHost")?.Content)
+                .GetLogicalChildren();
+            var progressText = (TextBlock)children.ElementAt(0).LogicalChildren[1];
+            var progressBar = (ProgressBar)children.ElementAt(0).LogicalChildren[0];
+
+            progressText.Text = "Unzipping...";
+            progressBar.Value = 0;
+
+            ZipFile.ExtractToDirectory(_filename, Environment.CurrentDirectory, Encoding.UTF8, true);
+
+            progressText.Text = "Done!";
+            progressBar.Value = 100;
+
+            DialogHost.GetDialogSession("MainDialogHost")?.Close(true);
+        });
     }
 
     private void WebClient_DownloadProgressChanged(object sender, DownloadProgressChangedEventArgs e)
