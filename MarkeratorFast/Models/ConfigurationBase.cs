@@ -28,7 +28,7 @@ public partial class ConfigurationBase : ObservableObject
     [ObservableProperty]
     public FileInfo? _favIcon = null;
     [ObservableProperty]
-    public bool _generateRss = false;
+    public bool? _generateRss = null;
     [ObservableProperty]
     public FileInfo? _rssIcon = null;
     [ObservableProperty]

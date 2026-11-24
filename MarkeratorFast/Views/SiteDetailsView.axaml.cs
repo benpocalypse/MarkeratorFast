@@ -1,4 +1,6 @@
 using System;
+using System.Collections.Generic;
+using System.Collections.Immutable;
 using System.IO;
 using System.Reflection;
 using System.Text;
@@ -25,19 +27,36 @@ public partial class SiteDetailsView : UserControl
         {
             var config = (DataContext as SiteDetailsViewModel).Configuration;
 
-            StringBuilder arguments = new StringBuilder();
             Type type = typeof(ConfigurationV1);
             FieldInfo[] properties = type.GetFields();
 
+            ImmutableList<KeyValuePair<string, string>> arguments = ImmutableList<KeyValuePair<string, string>>.Empty;
+            
             foreach (FieldInfo property in properties)
             {
-                Console.WriteLine(property.Name + " = " + property.GetValue(config));
+                if (property.GetValue(config) != null && property.GetValue(config) != string.Empty)
+                {
+                    arguments = arguments.Add(new KeyValuePair<string, string>(property.Name, property.GetValue(config).ToString()));
+                    //Console.WriteLine(property.Name + " = " + property.GetValue(config));
+                }
+            }
+
+            // TOD: Abandon this KVP nonsense. Either create a dedicated helper class,
+            // switch to the OneOf library, or upgrade to .NET 11 and use the new
+            // discriminated unions. I'm too old to do this song and dance.
+            foreach (var val in arguments)
+            {
+                switch (val.Key)
+                {
+                    case "_siteTitle":
+                        break;
+                }
             }
             
             // TODO - wire up these arguments to markerator itself, with error checking and validation
 
-            var result = ProgramRunnerHelper.RunExternalProgram("markerator", "--help");
-            Console.WriteLine(result);
+            //var result = ProgramRunnerHelper.RunExternalProgram("markerator", "--help");
+            //Console.WriteLine(result);
         });
     }
 
